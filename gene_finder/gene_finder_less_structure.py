@@ -43,28 +43,45 @@ def find_all_ORFs_both_strands(dna):
         
         dna: a DNA sequence
         returns: a list of non-nested ORFs
+
     >>> find_all_ORFs_both_strands("ATGCGAATGTAGCATCAAA")
     ['ATGCGAATG', 'ATGCTACATTCGCAT']
     """
 
+    # initialize variables
     ORFs = []
-    
-    split1 = " ".join([dna[i:i+3] for i in range(0, len(dna)-len(dna)%3, 3)])
-    split2 = " ".join([dna[i:i+3] for i in range(1, len(dna)-1-len(dna)%3, 3)])
-    split3 = " ".join([dna[i:i+3] for i in range(2, len(dna)-2-len(dna)%3, 3)])
-    print split1
-    print split2
-    print split3
+    frames = []
 
-    if(split1.find('ATG') != -1 & any(stop in split1 for stop in ['TAG', 'TAA', 'TGA'])):
-        ORFs.append(split1[split1.find('ATG'):min(i for i in [split1.find('TAG'), split1.find('TAA'), split1.find('TGA')] if i > 0)])
-        # remove ORF from split1
-        
-    if(split1.find('ATG') != -1 & any(stop in split1 for stop in ['TAG', 'TAA', 'TGA'])):
-        print "I've made a terrible mistake..."
+    # get reverse complement
+    rdna = get_reverse_complement(dna)
 
-    print ORFs
-    pass
+    # split all six frames (separating characters in groups of three with spaces)
+    frames.append(" ".join([dna[i:i+3] for i in range(0, len(dna)-len(dna)%3, 3)]))
+    frames.append(" ".join([dna[i:i+3] for i in range(1, len(dna)-1-len(dna)%3, 3)]))
+    frames.append(" ".join([dna[i:i+3] for i in range(2, len(dna)-2-len(dna)%3, 3)]))
+    frames.append(" ".join([rdna[i:i+3] for i in range(0, len(rdna)-len(rdna)%3, 3)]))
+    frames.append(" ".join([rdna[i:i+3] for i in range(1, len(rdna)-1-len(rdna)%3, 3)]))
+    frames.append(" ".join([rdna[i:i+3] for i in range(2, len(rdna)-2-len(rdna)%3, 3)]))
+
+    # iterate through each frame looking for ORFs
+    for frame in frames:
+        while(frame.find('ATG') != -1):
+            beg = frame.find('ATG')
+
+            # if stop codon exists, get index of first appearance
+            # otherwise, get index for end of frame
+            if any(stop in frame for stop in ['TAG', 'TAA', 'TGA']):
+                end = min(i for i in [frame.find('TAG'), frame.find('TAA'), frame.find('TGA')] if i > 0)
+            else:
+                end = len(frame)
+
+            # add new ORF to list of ORFs
+            ORFs.append(frame[beg:end].replace(" ", ""))
+
+            # update frame by removing searched dna
+            frame = frame[end + 4:]
+
+    return ORFs
 
 def longest_ORF(dna):
     """ Finds the longest ORF on both strands of the specified DNA and returns it
