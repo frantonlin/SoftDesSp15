@@ -2,7 +2,7 @@
 """
 Created on Sun Feb  2 11:24:42 2014
 
-@author: YOUR NAME HERE
+@author: Franton Lin
 
 """
 
@@ -12,6 +12,30 @@ import random
 from load import load_seq
 
 ### YOU WILL START YOUR IMPLEMENTATION FROM HERE DOWN ###
+#def test(teststring):
+#    for i in range(0, len(teststring)):
+#        print teststring + " " + str(i)
+
+def get_reverse_complement(dna):
+    """ Gets the reverse complement of the given DNA sequence.
+
+        dna: a DNA sequence
+        returns: the reverse complement
+    >>> get_reverse_complement("ATGCCCGCTTT")
+    'AAAGCGGGCAT'
+    """
+    complement = ""
+    length = len(dna)
+    for i in range(1, length + 1):
+        if dna[length - i] == 'A':
+            complement += 'T'
+        elif dna[length - i] == 'T':
+            complement += 'A'
+        elif dna[length - i] == 'G':
+            complement += 'C'
+        else:
+            complement += 'G'
+    return complement
 
 def find_all_ORFs_both_strands(dna):
     """ Finds all non-nested open reading frames in the given DNA sequence on both
@@ -22,7 +46,24 @@ def find_all_ORFs_both_strands(dna):
     >>> find_all_ORFs_both_strands("ATGCGAATGTAGCATCAAA")
     ['ATGCGAATG', 'ATGCTACATTCGCAT']
     """
-    # TODO: implement this
+
+    ORFs = []
+    
+    split1 = " ".join([dna[i:i+3] for i in range(0, len(dna)-len(dna)%3, 3)])
+    split2 = " ".join([dna[i:i+3] for i in range(1, len(dna)-1-len(dna)%3, 3)])
+    split3 = " ".join([dna[i:i+3] for i in range(2, len(dna)-2-len(dna)%3, 3)])
+    print split1
+    print split2
+    print split3
+
+    if(split1.find('ATG') != -1 & any(stop in split1 for stop in ['TAG', 'TAA', 'TGA'])):
+        ORFs.append(split1[split1.find('ATG'):min(i for i in [split1.find('TAG'), split1.find('TAA'), split1.find('TGA')] if i > 0)])
+        # remove ORF from split1
+        
+    if(split1.find('ATG') != -1 & any(stop in split1 for stop in ['TAG', 'TAA', 'TGA'])):
+        print "I've made a terrible mistake..."
+
+    print ORFs
     pass
 
 def longest_ORF(dna):
@@ -76,5 +117,9 @@ def gene_finder(dna, threshold):
     pass
 
 if __name__ == "__main__":
+    #print "Reverse complement of ATGCCCGCTTT is\t" + get_reverse_complement("ATGCCCGCTTT")
+    #print "Expected:\t\t\t\t\tAAAGCGGGCAT\n"
+    #print "Reverse complement of CCGCGTTCA is\t\t" + get_reverse_complement("CCGCGTTCA")
+    #print "Expected:\t\t\t\t\tTGAACGCGG"
     import doctest
     doctest.testmod()
