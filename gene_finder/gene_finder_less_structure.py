@@ -48,7 +48,7 @@ def find_all_ORFs_both_strands(dna):
     rdna = get_reverse_complement(dna)
 
     # split all six frames into lists of length-3 strings
-    for i in range(0, len(dna)):
+    for i in range(len(dna)):
         if i+3 <= len(dna):
             if i%3 == 0:    # first frames
                 frames[0].append(dna[i:i+3])
@@ -63,15 +63,15 @@ def find_all_ORFs_both_strands(dna):
     # iterate through each frame looking for ORFs
     for frame in frames:
         ind = -1    # the index of the current ORF (-1 if searching)
-        for i in range(0, len(frame)):
+        for i in range(len(frame)):
             if frame[i] == 'ATG' and ind == -1:             # found a start
                 ORFs.append(frame[i])
                 ind = len(ORFs) - 1
             elif ind != -1:
-                if frame[i] != 'TAG' and 'TAA' and 'TGA':   # not end yet
-                    ORFs[ind] += frame[i]
-                else:                                       # found an end
+                if frame[i] in ['TAG', 'TAA', 'TGA']:       # found an end
                     ind = -1
+                else:
+                    ORFs[ind] += frame[i]                   # not end yet
 
     return ORFs
 
@@ -81,9 +81,21 @@ def longest_ORF(dna):
     >>> longest_ORF("ATGCGAATGTAGCATCAAA")
     'ATGCTACATTCGCAT'
     """
-    # TODO: implement this
-    pass
+    ORFs = find_all_ORFs_both_strands(dna)
+    if ORFs:
+        return max(ORFs)
+    else:
+        return ''
 
+def shuffle_string(s):
+    """ Randomly shuffles and returns the specified string
+
+        s: string to be shuffled
+        returns: shuffled string
+        """
+    listed = list(s)
+    random.shuffle(listed)
+    return "".join(listed)
 
 def longest_ORF_noncoding(dna, num_trials):
     """ Computes the maximum length of the longest ORF over num_trials shuffles
@@ -91,9 +103,17 @@ def longest_ORF_noncoding(dna, num_trials):
         
         dna: a DNA sequence
         num_trials: the number of random shuffles
-        returns: the maximum length longest ORF """
-    # TODO: implement this
-    pass
+        returns: the maximum length longest ORF
+
+    NOT TESTED?!
+        """
+
+    longest = 0
+    for i in range(num_trials):
+        l = len(longest_ORF(shuffle_string(dna)))
+        if l > longest: longest = l
+
+    return longest
 
 def coding_strand_to_AA(dna):
     """ Computes the Protein encoded by a sequence of DNA.  This function
@@ -109,8 +129,18 @@ def coding_strand_to_AA(dna):
         >>> coding_strand_to_AA("ATGCCCGCTTT")
         'MPA'
     """
-    # TODO: implement this
-    pass
+    aa_table = {}
+    for i in range(len(codons)):
+        for j in codons[i]:
+            aa_table[j] = aa[i]
+
+    #print aa_table
+
+    protein = ''
+    for i in range(0, len(dna) - len(dna)%3, 3):
+        protein += aa_table[dna[i:i+3]]
+
+    return protein
 
 def gene_finder(dna, threshold):
     """ Returns the amino acid sequences coded by all genes that have an ORF
@@ -122,13 +152,14 @@ def gene_finder(dna, threshold):
         returns: a list of all amino acid sequences whose ORFs meet the minimum
                  length specified.
     """
-    # TODO: implement this
-    pass
+    sequences = []
+    threshold = longest_ORF_noncoding(dna, 1500)
+    ORFs = find_all_ORFs_both_strands(dna)
+    for ORF in ORFs:
+        if len(ORF) > threshold:
+            sequences.append(coding_strand_to_AA(ORF))
+    return sequences
 
 if __name__ == "__main__":
-    #print "Reverse complement of ATGCCCGCTTT is\t" + get_reverse_complement("ATGCCCGCTTT")
-    #print "Expected:\t\t\t\t\tAAAGCGGGCAT\n"
-    #print "Reverse complement of CCGCGTTCA is\t\t" + get_reverse_complement("CCGCGTTCA")
-    #print "Expected:\t\t\t\t\tTGAACGCGG"
     import doctest
     doctest.testmod()
