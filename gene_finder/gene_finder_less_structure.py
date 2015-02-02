@@ -24,18 +24,11 @@ def get_reverse_complement(dna):
     >>> get_reverse_complement("ATGCCCGCTTT")
     'AAAGCGGGCAT'
     """
-    complement = ""
-    length = len(dna)
-    for i in range(1, length + 1):
-        if dna[length - i] == 'A':
-            complement += 'T'
-        elif dna[length - i] == 'T':
-            complement += 'A'
-        elif dna[length - i] == 'G':
-            complement += 'C'
-        else:
-            complement += 'G'
-    return complement
+
+    comps = {'A':'T', 'T':'A', 'G':'C', 'C':'G'}
+    rev_comp = "".join([comps[nucleo] for nucleo in dna])[::-1]
+
+    return rev_comp
 
 def find_all_ORFs_both_strands(dna):
     """ Finds all non-nested open reading frames in the given DNA sequence on both
@@ -43,43 +36,42 @@ def find_all_ORFs_both_strands(dna):
         
         dna: a DNA sequence
         returns: a list of non-nested ORFs
-
     >>> find_all_ORFs_both_strands("ATGCGAATGTAGCATCAAA")
     ['ATGCGAATG', 'ATGCTACATTCGCAT']
     """
 
     # initialize variables
     ORFs = []
-    frames = []
+    frames = [[], [], [], [], [], []]
 
     # get reverse complement
     rdna = get_reverse_complement(dna)
 
-    # split all six frames (separating characters in groups of three with spaces)
-    frames.append(" ".join([dna[i:i+3] for i in range(0, len(dna)-len(dna)%3, 3)]))
-    frames.append(" ".join([dna[i:i+3] for i in range(1, len(dna)-1-len(dna)%3, 3)]))
-    frames.append(" ".join([dna[i:i+3] for i in range(2, len(dna)-2-len(dna)%3, 3)]))
-    frames.append(" ".join([rdna[i:i+3] for i in range(0, len(rdna)-len(rdna)%3, 3)]))
-    frames.append(" ".join([rdna[i:i+3] for i in range(1, len(rdna)-1-len(rdna)%3, 3)]))
-    frames.append(" ".join([rdna[i:i+3] for i in range(2, len(rdna)-2-len(rdna)%3, 3)]))
+    # split all six frames into lists of length-3 strings
+    for i in range(0, len(dna)):
+        if i+3 <= len(dna):
+            if i%3 == 0:    # first frames
+                frames[0].append(dna[i:i+3])
+                frames[1].append(rdna[i:i+3])
+            elif i%3 == 1:  # second frames
+                frames[2].append(dna[i:i+3])
+                frames[3].append(rdna[i:i+3])
+            elif i%3 == 2:  # third frames
+                frames[4].append(dna[i:i+3])
+                frames[5].append(rdna[i:i+3])
 
     # iterate through each frame looking for ORFs
     for frame in frames:
-        while(frame.find('ATG') != -1):
-            beg = frame.find('ATG')
-
-            # if stop codon exists, get index of first appearance
-            # otherwise, get index for end of frame
-            if any(stop in frame for stop in ['TAG', 'TAA', 'TGA']):
-                end = min(i for i in [frame.find('TAG'), frame.find('TAA'), frame.find('TGA')] if i > 0)
-            else:
-                end = len(frame)
-
-            # add new ORF to list of ORFs
-            ORFs.append(frame[beg:end].replace(" ", ""))
-
-            # update frame by removing searched dna
-            frame = frame[end + 4:]
+        ind = -1    # the index of the current ORF (-1 if searching)
+        for i in range(0, len(frame)):
+            if frame[i] == 'ATG' and ind == -1:             # found a start
+                ORFs.append(frame[i])
+                ind = len(ORFs) - 1
+            elif ind != -1:
+                if frame[i] != 'TAG' and 'TAA' and 'TGA':   # not end yet
+                    ORFs[ind] += frame[i]
+                else:                                       # found an end
+                    ind = -1
 
     return ORFs
 
