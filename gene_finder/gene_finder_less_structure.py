@@ -16,6 +16,11 @@ from load import load_seq
 #    for i in range(0, len(teststring)):
 #        print teststring + " " + str(i)
 
+aa_table = {}
+for i in range(len(codons)):
+    for j in codons[i]:
+        aa_table[j] = aa[i]
+
 def get_reverse_complement(dna):
     """ Gets the reverse complement of the given DNA sequence.
 
@@ -111,7 +116,8 @@ def longest_ORF_noncoding(dna, num_trials):
     longest = 0
     for i in range(num_trials):
         l = len(longest_ORF(shuffle_string(dna)))
-        if l > longest: longest = l
+        if l > longest:
+            longest = l
 
     return longest
 
@@ -129,13 +135,6 @@ def coding_strand_to_AA(dna):
         >>> coding_strand_to_AA("ATGCCCGCTTT")
         'MPA'
     """
-    aa_table = {}
-    for i in range(len(codons)):
-        for j in codons[i]:
-            aa_table[j] = aa[i]
-
-    #print aa_table
-
     protein = ''
     for i in range(0, len(dna) - len(dna)%3, 3):
         protein += aa_table[dna[i:i+3]]
@@ -153,7 +152,6 @@ def gene_finder(dna, threshold):
                  length specified.
     """
     sequences = []
-    threshold = longest_ORF_noncoding(dna, 1500)
     ORFs = find_all_ORFs_both_strands(dna)
     for ORF in ORFs:
         if len(ORF) > threshold:
@@ -163,3 +161,7 @@ def gene_finder(dna, threshold):
 if __name__ == "__main__":
     import doctest
     doctest.testmod()
+
+    dna = load_seq("./data/X73525.fa")
+    threshold = longest_ORF_noncoding(dna, 1500)
+    print gene_finder(dna, threshold)
