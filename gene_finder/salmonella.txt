@@ -1,15 +1,15 @@
 Franton Lin
 SoftDesSp15
 
-type III secretion system protein SpaS [Salmonella enterica]
-type III secretion system protein SpaO [Salmonella enterica]
-type III secretion system protein SpaR [Salmonella enterica]
-type III secretion system protein SpaP [Salmonella enterica]
+type III secretion system protein SpaS [Salmonella enterica]: 	http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_446019864
+type III secretion system protein SpaO [Salmonella enterica]: 	http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_445980879
+type III secretion system protein SpaR [Salmonella enterica]: 	http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_446421110
+type III secretion system protein SpaP [Salmonella enterica]: 	http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_555241571
 Secrete proteins into eukaryotic organisms to infect them
 
-antigen presentation protein SpaN [Salmonella enterica]
-surface presentation of antigens [Salmonella enterica]
+antigen presentation protein SpaN [Salmonella enterica]:		http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_446425243
+surface presentation of antigens [Salmonella enterica]: 		http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_694228539
 Required for entry of bacterium into host cells
 
-ATP synthase SpaL [Salmonella enterica]
+ATP synthase SpaL [Salmonella enterica]: 						http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_487406678
 Energy!
