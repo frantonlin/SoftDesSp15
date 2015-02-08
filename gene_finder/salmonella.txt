@@ -1,15 +1,22 @@
 Franton Lin
 SoftDesSp15
 
-type III secretion system protein SpaS [Salmonella enterica]: 	http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_446019864
-type III secretion system protein SpaO [Salmonella enterica]: 	http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_445980879
-type III secretion system protein SpaR [Salmonella enterica]: 	http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_446421110
-type III secretion system protein SpaP [Salmonella enterica]: 	http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_555241571
+type III secretion system protein SpaS [Salmonella enterica]:
+	http://www.ncbi.nlm.nih.gov/protein/446019864?report=genbank&log$=protalign&blast_rank=1&RID=DCN7E2Y4015
+type III secretion system protein SpaO [Salmonella enterica]:
+	http://www.ncbi.nlm.nih.gov/protein/445980879?report=genbank&log$=protalign&blast_rank=1&RID=DCN7XK29014
+type III secretion system protein SpaR [Salmonella enterica]:
+	http://www.ncbi.nlm.nih.gov/protein/446421110?report=genbank&log$=protalign&blast_rank=1&RID=DCN8C0YS014
+type III secretion system protein SpaP [Salmonella enterica]:
+	http://www.ncbi.nlm.nih.gov/protein/555241571?report=genbank&log$=protalign&blast_rank=2&RID=DCN8MWHE014
 Secrete proteins into eukaryotic organisms to infect them
 
-antigen presentation protein SpaN [Salmonella enterica]:		http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_446425243
-surface presentation of antigens [Salmonella enterica]: 		http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_694228539
+antigen presentation protein SpaN [Salmonella enterica]:
+	http://www.ncbi.nlm.nih.gov/protein/446425243?report=genbank&log$=protalign&blast_rank=1&RID=DCN7NXB2014
+surface presentation of antigens [Salmonella enterica]:
+	http://www.ncbi.nlm.nih.gov/protein/694228539?report=genbank&log$=protalign&blast_rank=1&RID=DCN84NYZ015
 Required for entry of bacterium into host cells
 
-ATP synthase SpaL [Salmonella enterica]: 						http://blast.ncbi.nlm.nih.gov/Blast.cgi#alnHdr_487406678
+ATP synthase SpaL [Salmonella enterica]:
+	http://www.ncbi.nlm.nih.gov/protein/487406678?report=genbank&log$=protalign&blast_rank=2&RID=DCN84NYZ015
 Energy!
