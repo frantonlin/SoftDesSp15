@@ -26,7 +26,7 @@ def build_random_function(min_depth, max_depth):
     if max_depth == 1:
         if random.random() > 0.5:
             return ["x"]
-        else:
+        else:   
             return ["y"]
     elif min_depth <= 1:
         if random.random() > (max_depth - 1.0)/max_depth:
@@ -48,8 +48,10 @@ def build_random_function(min_depth, max_depth):
         return ["hypot",build_random_function(min_depth-1,max_depth-1),build_random_function(min_depth-1,max_depth-1)]
     #elif rand < 6.0/NUM_FF:
     #    return ["pow",build_random_function(min_depth-1,max_depth-1)]
+    #elif rand < 6.0/NUM_FF:
+    #    return ["add",build_random_function(min_depth-1,max_depth-1),build_random_function(min_depth-1,max_depth-1)]
     elif rand < 6.0/NUM_FF:
-        return ["add",build_random_function(min_depth-1,max_depth-1),build_random_function(min_depth-1,max_depth-1)]
+        return ["cube",build_random_function(min_depth-1,max_depth-1)]
 
 def evaluate_random_function(f, x, y):
     """ Evaluate the random function f with inputs x,y
@@ -85,21 +87,23 @@ def evaluate_random_function(f, x, y):
             return sqrt(first**2 + second**2)/sqrt(2)
         else:
             return -sqrt(first**2 + second**2)/sqrt(2)
-    #elif f[0] == "pow":
-    #    val = evaluate_random_function(f[1], x, y)
-    #    if val >= 0:
-    #        return 1-val**val
-    #    else:
-    #        return -(1-abs(val)**abs(val))
+    elif f[0] == "pow":
+        val = evaluate_random_function(f[1], x, y)
+        if val >= 0:
+            return 1-val**val
+        else:
+            return -(1-abs(val)**abs(val))
     elif f[0] == "add":
         first = evaluate_random_function(f[1], x, y)
         second = evaluate_random_function(f[1], x, y)
         if first + second > 1:
-            return (1 - (first+second) + 1)**3
+            return (1 - (first+second) + 1)
         elif first + second < -1:
-            return (-2 - (first+second))**3
+            return (-2 - (first+second))
         else:
-            return (first + second)**3
+            return (first + second)
+    elif f[0] == "cube":
+        return evaluate_random_function(f[1], x, y)**3
 
 def remap_interval(val, input_interval_start, input_interval_end, output_interval_start, output_interval_end):
     """ Given an input value in the interval [input_interval_start,
@@ -202,7 +206,7 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    generate_art("myart.png",1600,900)
+    generate_art("myart.png")
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
