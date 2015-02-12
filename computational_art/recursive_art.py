@@ -9,7 +9,7 @@ import random
 from PIL import Image
 from math import pi, sin, cos, hypot, sqrt
 
-NUM_FF = 5
+NUM_FF = 6
 
 
 def build_random_function(min_depth, max_depth):
