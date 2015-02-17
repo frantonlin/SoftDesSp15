@@ -2,7 +2,7 @@
 
 from Nsound import *
 import numpy as np
-from random import choice
+from random import choice, randint
 
 def add_note(out, instr, key_num, duration, bpm, volume):
     """ Adds a note from the given instrument to the specified stream
@@ -31,6 +31,23 @@ solo = AudioStream(sampling_rate, 1)
 blues_scale = [25, 28, 30, 31, 32, 35, 37, 40, 42, 43, 44, 47, 49, 52, 54, 55, 56, 59, 61]
 beats_per_minute = 45				# Let's make a slow blues solo
 
-add_note(solo, bass, blues_scale[0], 1.0, beats_per_minute, 1.0)
+curr_note = 0
+add_note(solo, bass, blues_scale[curr_note], 1.0, beats_per_minute, 1.0)
+
+licks = [ [ [1,0.5], [1,0.5], [1, 0.5], [1, 0.5] ], [ [-1, 0.5], [-1, 0.5], [-1, 0.5], [-1, 0.5] ] ]
+for i in range(4):
+    lick = choice(licks)
+    for note in lick:
+        curr_note += note[0]
+        scale_length = len(blues_scale) - 1
+        #if curr_note > scale_length:
+        #    curr_note = scale_length - (curr_note - scale_length) % 3
+        #elif curr_note < 0:
+        #    curr_note = curr_note % 3
+        if curr_note > scale_length:
+            curr_note = scale_length - randint(1, curr_note - scale_length + 1)
+        elif curr_note < 0:
+            curr_note = randint(1, -curr_note + 1)
+        add_note(solo, bass, blues_scale[curr_note], note[1], beats_per_minute, 1.0)
 
 solo >> "blues_solo.wav"
