@@ -1,5 +1,5 @@
 """
-Created on Wed Feb  1 15:51 2014
+Created on Wed Feb  1 15:51 2015
 
 @author: Franton Lin
 
@@ -191,9 +191,12 @@ def generate_image(filename, x_size=350, y_size=350):
     timeflag = 0
 
     # Functions for red, green, and blue channels - where the magic happens!
-    red_function = build_random_function(7, 9)
-    green_function = build_random_function(7, 9)
-    blue_function = build_random_function(7, 9)
+    red_function = build_random_function(13, 15)
+    green_function = build_random_function(13, 15)
+    blue_function = build_random_function(13,15)
+    print "red_function:\t" + str(red_function)+"\n"
+    print "green_function:\t" + str(green_function)+"\n"
+    print "blue_function:\t" + str(blue_function)+"\n"
 
     # Create image and loop over all pixels
     im = Image.new("RGB", (x_size, y_size))
@@ -285,9 +288,9 @@ if __name__ == '__main__':
     # Create some computational art!
     # TODO: Un-comment the generate_art function call after you
     #       implement remap_interval and evaluate_random_function
-    #generate_image("myart.png")
+    generate_image("myart.png", 1920, 1080)
 
-    generate_movie("myart.mp4", 640, 360, 120)
+    #generate_movie("myart.mp4", 640, 360, 120)
 
     # Test that PIL is installed correctly
     # TODO: Comment or remove this function call after testing PIL install
