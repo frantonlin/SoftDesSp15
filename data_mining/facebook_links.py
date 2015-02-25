@@ -15,10 +15,22 @@ Created on Sun Feb 22 13:41 2015
 	- date    : for news items, the publication date.
 """
 
-import  re
+import re
 import cPickle
 from pattern.web import Facebook, NEWS, COMMENTS, LIKES, FRIENDS
+import csv
 import matplotlib.pyplot as plt
+
+def save_to_csv(data, filename):
+		""" Writes given data in list of tuples to a .csv file with the given filename
+
+			data: the list of tuples to write to a .csv
+			filename: the name of the .csv to write
+		"""
+			writer = csv.writer(f)
+			writer.writerow(['URL', 'num_posts', 'num_likes'])	
+			for row in data:
+				writer.writerow(row)
 
 # removed my key
 def fetch_data(data="facebook.pickle", friends_count=1000, news_count=100, key='REMOVED MY KEY'):
@@ -120,10 +132,14 @@ def process_data(data='facebook.pickle'):
 			else:
 				short_counts[short_url] = link_counts[url]
 
-	# Print the results
+	# Sort from highest to lowest cumulative likes
+	sort_list = [(k, v[0], v[1]) for k, v in short_counts.iteritems() if k != "num_posts" and k != "num_links"]
+	sort_list.sort(key=lambda tup: tup[2], reverse = True)
 
-	#sort_list = [(k, v[0], v[1]) for k, v in short_counts.iteritems() if k != "num_posts" and k != "num_links"]
-	#sort_list.sort(key=lambda tup: tup[2])#, reverse = True)
+	# Save the results
+	save_to_csv(sort_list, data[:-6] + "csv")
+
+	# Print the results
 	#for item in sort_list:
 	# 	print (item[0] + ":").ljust(65) + str(item[1]) + " posts, " + str(item[2]) + " likes"
 
@@ -131,6 +147,6 @@ def process_data(data='facebook.pickle'):
 	print "num_links: " + str(short_counts["num_links"])
 
 #fetch_data()
-process_data('facebook_1000_250.pickle')
+process_data('facebook_10_10.pickle')
 
 #print "Text:\t" + (news.text).encode('utf-8')
