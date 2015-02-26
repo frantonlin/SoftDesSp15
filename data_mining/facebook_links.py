@@ -117,28 +117,28 @@ def process_data(data='facebook.pickle'):
 				short_counts[short_url] = link_counts[url]
 
 	sort_list = [(k, v[0], v[1]) for k, v in short_counts.iteritems() if k != "num_posts" and k != "num_links"]
-	num_entries = 50
+	num_entries = 15
 
 	# Sort from highest to lowest number of posts
 	sort_list.sort(key=lambda tup: tup[1], reverse = True)
 	# Plot number of posts
 	plot_bar_graph([tup[0] for tup in sort_list[:num_entries]], "URL",
 		[tup[1] for tup in sort_list[:num_entries]], "Number of Posts",
-		num_entries, "URLs with Highest Number of Posts")	
+		num_entries, "Top 15 URLs \nwith Highest Number of Posts")	
 
 	# Sort from highest to lowest cumulative likes
 	sort_list.sort(key=lambda tup: tup[2], reverse = True)
 	# Plot cumulative likes
 	plot_bar_graph([tup[0] for tup in sort_list[:num_entries]], "URL",
 		[tup[2] for tup in sort_list[:num_entries]], "Cumulative Likes",
-		num_entries, "URLs with Highest Cumulative Likes")
+		num_entries, "Top 15 URLs \nwith Highest Cumulative Likes")
 
 	# Sort from highest to lowest average likes per post
 	sort_list.sort(key=lambda tup: float(tup[2])/tup[1], reverse = True)
 	# Plot average likes per post
 	plot_bar_graph([tup[0] for tup in sort_list[:num_entries]], "URL",
-		[float(tup[2])/tup[1] for tup in sort_list[:num_entries]], "Rounded Average Likes per Post",
-		num_entries, "URLs with Highest Average Likes per Post")
+		[float(tup[2])/tup[1] for tup in sort_list[:num_entries]], "Average Likes per Post",
+		num_entries, "Top 15 URLs \nwith Highest Average Likes per Post")
 
 	# Print the results
 	#for item in sort_list:
@@ -147,7 +147,7 @@ def process_data(data='facebook.pickle'):
 	print "num_posts: " + str(short_counts["num_posts"])
 	print "num_links: " + str(short_counts["num_links"])
 
-def plot_bar_graph(x_data, x_label, y_data, y_label, num_entries, title):
+def plot_bar_graph(x_data, x_label, y_data, y_label, num_entries, title): # photos 22 average likes per post
 	""" Plots a bar graph from given data and labels
 
 		x_data: the x axis data
@@ -159,7 +159,7 @@ def plot_bar_graph(x_data, x_label, y_data, y_label, num_entries, title):
 	"""
 	print "Graphing data..."
 
-	fig = plt.figure(figsize=(20, 10))
+	fig = plt.figure(figsize=(12, 9))
 	ax = plt.subplot(111)
 
 	index = np.arange(num_entries)
@@ -167,18 +167,18 @@ def plot_bar_graph(x_data, x_label, y_data, y_label, num_entries, title):
 
 	rects =ax.bar(index, y_data, bar_width, color='b')
 
-	plt.xlabel(x_label, fontsize=18)
-	plt.ylabel(y_label, fontsize=18)
-	plt.title(title, fontsize=24)
-	plt.tick_params(axis='both', which='major', labelsize=14)
-	plt.xticks(index + bar_width / 2.0, x_data, rotation=90)
+	plt.xlabel(x_label, fontsize=28)
+	plt.ylabel(y_label, fontsize=28)
+	plt.title(title, fontsize=32, fontweight='bold')
+	plt.tick_params(axis='both', which='major', labelsize=18, bottom='off', top='off')
+	plt.xticks(index + bar_width/1.2, x_data, rotation=45, ha='right')
 	plt.ylim([0, max(y_data)+max(y_data)%(10**(len("%.f"%max(y_data))-1))/2])
 
 	# Value labels on top
 	for i, rect in enumerate(rects):
 		height = rect.get_height()
 		plt.text(rect.get_x()+bar_width/2, height + len("%.f"%max(y_data)), "%.f" % (y_data[i]),
-			fontsize=9, ha='center', va='bottom')
+			fontsize=12, ha='center', va='bottom')
 
 	plt.tight_layout()
 	plt.show()
