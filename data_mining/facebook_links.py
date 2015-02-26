@@ -72,7 +72,7 @@ def process_data(data='facebook.pickle'):
 		if url != "num_posts" and url != "num_links" and re.match('http',url):	# not a post counter and is a valid URL
 			if "facebook" in url:			# most cases of Facebook related URLs
 				if "video.php" in url:		# shared video
-					short_url = re.search('//[^\t\n\r\f\v]*video.php', url).group()[2:]
+					short_url = re.search('//[^\t\n\r\f\v]*video.php', url).group()[6:]
 				elif "/photos/" in url:		# shared photo
 					short_url = re.search('//[^\t\n\r\f\v]*photos', url).group()[6:]
 				elif "posts" in url:		# link to post
@@ -173,7 +173,6 @@ def plot_bar_graph(x_data, x_label, y_data, y_label, num_entries, title):
 	plt.tick_params(axis='both', which='major', labelsize=14)
 	plt.xticks(index + bar_width / 2.0, x_data, rotation=90)
 	plt.ylim([0, max(y_data)+max(y_data)%(10**(len("%.f"%max(y_data))-1))/2])
-	print 10**len("%.f"%max(y_data))
 
 	# Value labels on top
 	for i, rect in enumerate(rects):
