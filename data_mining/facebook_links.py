@@ -5,16 +5,6 @@ Created on Sun Feb 22 13:41 2015
 
 """
 
-"""
-	NEWS variables:
-	- url     : the URL of the referred web content,
-	- title   : the title of the content at the URL,
-	- text    : the content text,
-	- language: the content language,
-	- author  : for news items and images, the author,
-	- date    : for news items, the publication date.
-"""
-
 import re
 import cPickle
 from pattern.web import Facebook, NEWS, COMMENTS, LIKES, FRIENDS
@@ -69,7 +59,7 @@ def process_data(data='facebook.pickle'):
 
 		data: the .pickle file name to process (default: facebook.pickle)
 	"""
-	print "Processing data...\n"
+	print "Processing data..."
 
 	# Load the data from a file
 	input_file = open(data,'r')
@@ -150,9 +140,6 @@ def process_data(data='facebook.pickle'):
 		[float(tup[2])/tup[1] for tup in sort_list[:num_entries]], "Rounded Average Likes per Post",
 		num_entries, "URLs with Highest Average Likes per Post")
 
-	# Save the results
-	#save_to_csv(sort_list, data[:-6] + "csv")
-
 	# Print the results
 	#for item in sort_list:
 	# 	print (item[0] + ":").ljust(65) + str(item[1]) + " posts, " + str(item[2]) + " likes"
@@ -161,9 +148,19 @@ def process_data(data='facebook.pickle'):
 	print "num_links: " + str(short_counts["num_links"])
 
 def plot_bar_graph(x_data, x_label, y_data, y_label, num_entries, title):
+	""" Plots a bar graph from given data and labels
+
+		x_data: the x axis data
+		x_label: the label for the x axis
+		y_data: the y axis data
+		y_label: the label for the y axis
+		num_entries: the number of entries to plot
+		title: the title of the graph
+	"""
+	print "Graphing data..."
+
 	fig = plt.figure(figsize=(20, 10))
 	ax = plt.subplot(111)
-
 
 	index = np.arange(num_entries)
 	bar_width = 0.7
@@ -187,19 +184,5 @@ def plot_bar_graph(x_data, x_label, y_data, y_label, num_entries, title):
 	plt.tight_layout()
 	plt.show()
 
-
-def save_to_csv(data, filename):
-	""" Writes given data in list of tuples to a .csv file with the given filename
-			data: the list of tuples to write to a .csv
-		filename: the name of the .csv to write
-	"""
-	with open(filename, "w") as f:
-		writer = csv.writer(f)
-		writer.writerow(['URL', 'num_posts', 'num_likes'])	
-		for row in data:
-			writer.writerow(row)
-
 #fetch_data()
 process_data('facebook_1000_250.pickle')
-
-#print "Text:\t" + (news.text).encode('utf-8')
