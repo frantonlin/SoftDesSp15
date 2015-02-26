@@ -97,6 +97,8 @@ def process_data(data='facebook.pickle'):
 					list_url[14] = '*'
 					list_url[16] = '*'
 					short_url = "".join(list_url)
+				elif "scontent.xx.fbcdn.net" in url:	# another instance of Facebook photos (combining them)
+					short_url = "fbcdn-sphotos-*-*.akamaihd.net"
 				elif "youtu" in url:		# youtube
 					short_url = "youtube.com"
 				elif "imgur" in url:		# imgur
@@ -145,7 +147,7 @@ def process_data(data='facebook.pickle'):
 	sort_list.sort(key=lambda tup: float(tup[2])/tup[1], reverse = True)
 	# Plot average likes per post
 	plot_bar_graph([tup[0] for tup in sort_list[:num_entries]], "URL",
-		[float(tup[2])/tup[1] for tup in sort_list[:num_entries]], "Average Likes per Post",
+		[float(tup[2])/tup[1] for tup in sort_list[:num_entries]], "Rounded Average Likes per Post",
 		num_entries, "URLs with Highest Average Likes per Post")
 
 	# Save the results
@@ -166,22 +168,21 @@ def plot_bar_graph(x_data, x_label, y_data, y_label, num_entries, title):
 	index = np.arange(num_entries)
 	bar_width = 0.7
 
-	opacity = 1
-	error_config = {'ecolor': '0.3'}
+	rects =ax.bar(index, y_data, bar_width, color='b')
 
-	#print data[:10][2]
-
-	rects =ax.bar(index, y_data, bar_width,
-	                 alpha=opacity,
-	                 color='b',
-	                 error_kw=error_config)
-
-	plt.xlabel(x_label)
-	plt.ylabel(y_label)
-	plt.title(title)
-	#ax.set_xticklabels([tup[x_id] for tup in data[:num_entries]], rotation=90, rotation_mode="anchor")
-	plt.tick_params(axis='both', which='major', labelsize=12)
+	plt.xlabel(x_label, fontsize=18)
+	plt.ylabel(y_label, fontsize=18)
+	plt.title(title, fontsize=24)
+	plt.tick_params(axis='both', which='major', labelsize=14)
 	plt.xticks(index + bar_width / 2.0, x_data, rotation=90)
+	plt.ylim([0, max(y_data)+max(y_data)%(10**(len("%.f"%max(y_data))-1))/2])
+	print 10**len("%.f"%max(y_data))
+
+	# Value labels on top
+	for i, rect in enumerate(rects):
+		height = rect.get_height()
+		plt.text(rect.get_x()+bar_width/2, height + len("%.f"%max(y_data)), "%.f" % (y_data[i]),
+			fontsize=9, ha='center', va='bottom')
 
 	plt.tight_layout()
 	plt.show()
