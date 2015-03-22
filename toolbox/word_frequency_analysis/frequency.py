@@ -15,7 +15,7 @@ def get_word_list(file_name):
     while lines[start_line].find('START OF THIS PROJECT GUTENBERG EBOOK') == -1:
         start_line += 1
     end_line = start_line
-    while lines[end_line].find('END OF THIS PROJECT GUTENBERG EBOOK CANDIDE') == -1:
+    while lines[end_line].find('END OF THIS PROJECT GUTENBERG EBOOK') == -1:
     	end_line +=1
 
     lines = lines[start_line+1:end_line-1]
